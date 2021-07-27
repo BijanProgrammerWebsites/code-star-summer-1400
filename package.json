@@ -1,0 +1,16 @@
+{
+  "name": "code-star-summer-1400",
+  "version": "1.0.0",
+  "description": "Cool Text Animation for CodeStar Summer 1400!",
+  "main": "index.js",
+  "scripts": {
+    "start": "sass --watch styles/scss:styles/css"
+  },
+  "keywords": [],
+  "author": "BijanProgrammer",
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "^2.3.2",
+    "sass": "^1.36.0"
+  }
+}
