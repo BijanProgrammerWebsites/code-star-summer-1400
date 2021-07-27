@@ -1,0 +1,23 @@
+name: Deployment Workflow
+on:
+    push:
+        branches: [production]
+
+jobs:
+    deply_job:
+        name: Deploy
+        runs-on: ubuntu-latest
+        steps:
+            - name: Establish a Connection to Server and Update Website
+              uses: appleboy/ssh-action@master
+              with:
+                  host: 130.185.76.173
+                  username: root
+                  key: ${{secrets.SSH_KEY}}
+                  port: 22
+                  script: |
+                      cd /repos/code-star-summer-1400
+                      git fetch
+                      git checkout production
+                      git pull origin production
+                      cp -a . /var/fun/bijanprogrammer.com/html/code-star-summer-1400/
