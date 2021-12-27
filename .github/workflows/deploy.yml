@@ -1,7 +1,7 @@
 name: Deployment Workflow
 on:
     push:
-        branches: [production]
+        branches: [master]
 
 jobs:
     deply_job:
@@ -18,6 +18,6 @@ jobs:
                   script: |
                       cd /repos/code-star-summer-1400
                       git fetch
-                      git checkout production
-                      git pull origin production
+                      git checkout master
+                      git pull origin master
                       cp -a . /var/fun/bijanprogrammer.com/html/code-star-summer-1400/

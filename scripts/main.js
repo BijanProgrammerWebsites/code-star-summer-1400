@@ -66,24 +66,38 @@ const pieceAnimationOptions = {
 };
 
 // animators
-const animatePiece = (element, timeout) => {
-    setTimeout(() => {
-        const animation = element.animate(
+const flip = () => {
+    const data = [];
+    svgs.forEach((svg, i) => {
+        const pieces = [...svg.querySelectorAll('path, polygon')];
+        const delay = DURATION / pieces.length;
+
+        data.push(
+            ...pieces.map((piece, j) => ({
+                element: piece,
+                translate: generateRandomTranslate(),
+                rotate: generateRandomRotate(),
+                delay: i * DELAY + j * delay,
+            }))
+        );
+    });
+
+    data.forEach((x) => {
+        const animation = x.element.animate(
             [
                 {
-                    offset: 0,
                     opacity: '0',
-                    transform: `${generateRandomTranslate()} ${generateRandomRotate()}`,
+                    transform: `${x.translate} ${x.rotate}`,
                 },
-                {offset: 1, opacity: '1', transform: 'translate(0, 0) rotate(0)'},
+                {opacity: '1', transform: 'translate(0, 0) rotate(0)'},
             ],
-            pieceAnimationOptions
+            {...pieceAnimationOptions, delay: x.delay + backgroundAnimationOptions.duration}
         );
 
         if (slowMotion) animation.playbackRate = SLOW_RATE;
 
         animations.push(animation);
-    }, timeout + backgroundAnimationOptions.duration);
+    });
 };
 
 // events
@@ -96,16 +110,9 @@ const startButtonClickHandler = () => {
     startButton.style.display = 'none';
     footer.style.display = 'none';
 
+    flip();
+
     background.animate(backgroundKeyframes, backgroundAnimationOptions);
-
-    svgs.forEach((svg, i) => {
-        const pieces = svg.querySelectorAll('path, polygon');
-        const delay = DURATION / pieces.length;
-
-        pieces.forEach((piece, j) => {
-            animatePiece(piece, i * DELAY + j * delay);
-        });
-    });
 };
 
 const changeAnimationsPlaybackRate = (mouseDown) => {
